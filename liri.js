@@ -54,6 +54,7 @@ function getTwitter() {
 }
 
 function getSpotify() {
+
   var spotify = new Spotify({
     id: s_id,
     secret: s_secret
@@ -95,19 +96,23 @@ function getMovie() {
   request(queryUrl, function(error, response, body) {
 
     if (!error && response.statusCode === 200) {
-      console.log("Title: " + JSON.parse(body).Title);
-      console.log("Year: " + JSON.parse(body).Year);
-      console.log("IMDb Rating: " + JSON.parse(body).Ratings[0].Value);
-      console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value);
-      console.log("Country: " + JSON.parse(body).Country);
-      console.log("Language: " + JSON.parse(body).Language);
-      console.log("Plot: " + JSON.parse(body).Plot);
-      console.log("Actors: " + JSON.parse(body).Actors);
+      var body = JSON.parse(body);
+      console.log("Title: " + body.Title);
+      console.log("Year: " + body.Year);
+      console.log("IMDb Rating: " + body.Ratings[0].Value);
+      if (body.Ratings[1]) {
+        console.log("Rotten Tomatoes Rating: " + body.Ratings[1].Value);
+      }
+      console.log("Country: " + body.Country);
+      console.log("Language: " + body.Language);
+      console.log("Plot: " + body.Plot);
+      console.log("Actors: " + body.Actors);
     }
   });
 }
 
 function getRandom() {
+  
   fs.readFile("random.txt", "utf8", function(err, data) {
     if (err) {
       return console.log(err);
