@@ -43,10 +43,10 @@ function getTwitter() {
   client.get('statuses/user_timeline', params, function(error, tweets, response) {
     if (!error) {
       for (var i = 0; i < tweets.length; i++) {
-        console.log("------------------------------")
-        console.log(tweets[i].text);
-        console.log("Created at: " + tweets[i].created_at);
-        console.log("By: " + tweets[i].user.name);
+        log("------------------------------");
+        log(tweets[i].text);
+        log("Created at: " + tweets[i].created_at);
+        log("By: " + tweets[i].user.name);
       }
     }
   });
@@ -70,7 +70,7 @@ function getSpotify() {
     }
     var arr = data.tracks.items;
     for (var i = 0; i < arr.length; i++) {
-      console.log("------------------------------");
+      log("------------------------------");
       var artists = arr[i].artists;
       var artistsStr = "Artist(s): " + artists[0].name;
       for (var j = 1; j < artists.length; j++) {
@@ -78,10 +78,15 @@ function getSpotify() {
           artistsStr += ", " + artists[j].name;
         }
       }
-      console.log(artistsStr);
-      console.log("Song: " + arr[i].name);
-      console.log("Album: " + arr[i].album.name);
-      console.log("Preview: " + arr[i].preview_url);
+      log(artistsStr);
+      log("Song: " + arr[i].name);
+      log("Album: " + arr[i].album.name);
+      if (arr[i].preview_url === null) {
+        log("Preview: None available");
+      }
+      else {
+        log("Preview: " + arr[i].preview_url);
+      }
     }
   });
 }
@@ -97,16 +102,17 @@ function getMovie() {
 
     if (!error && response.statusCode === 200) {
       var body = JSON.parse(body);
-      console.log("Title: " + body.Title);
-      console.log("Year: " + body.Year);
-      console.log("IMDb Rating: " + body.Ratings[0].Value);
+      log("------------------------------");
+      log("Title: " + body.Title);
+      log("Year: " + body.Year);
+      log("IMDb Rating: " + body.Ratings[0].Value);
       if (body.Ratings[1]) {
-        console.log("Rotten Tomatoes Rating: " + body.Ratings[1].Value);
+        log("Rotten Tomatoes Rating: " + body.Ratings[1].Value);
       }
-      console.log("Country: " + body.Country);
-      console.log("Language: " + body.Language);
-      console.log("Plot: " + body.Plot);
-      console.log("Actors: " + body.Actors);
+      log("Country: " + body.Country);
+      log("Language: " + body.Language);
+      log("Plot: " + body.Plot);
+      log("Actors: " + body.Actors);
     }
   });
 }
@@ -132,4 +138,9 @@ function getRandom() {
         break;
     }
   });
+}
+
+function log(message) {
+  console.log(message);
+  fs.appendFile("log.txt", message + "\n");
 }
